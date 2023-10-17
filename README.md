@@ -202,6 +202,8 @@ Faria testes end2end usando Selenium, pois por conta do tempo não consegui impl
 
 Faria a implementação de uma ferramenta de monitoramente e observabilidade como o new relic, para visualizar e armazanar os logs que foram adicionados na aplicação.
 
+Esqueci de adicionar a validação de data menor que a data atual no fluxo de criação, mas está implementado.
+
 
 ## Autores
 
