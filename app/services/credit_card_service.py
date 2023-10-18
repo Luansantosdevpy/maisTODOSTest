@@ -78,18 +78,22 @@ class CreditCardService:
         existing_credit_card = self.repository.get_credit_card(card_id)
         if not existing_credit_card:
             app.logger.error('CreditCardService - updateCreditCard - credit card not found')
-            return False
+            return {"error": "Credit card not found"}, 404
+
+        is_valid_exp_date = self.validator.is_valid_exp_date(payload["exp_date"])
+        if is_valid_exp_date is False:
+            return {"error": "expiration date is invalid"}
 
         formatted_exp_date = self.validator.format_exp_date(payload["exp_date"])
 
         if not formatted_exp_date:
-            return False
+            return {"error": "Invalid expiration date format"}
 
         validate_card = self.validator.is_valid_card_number(payload["number"])
 
         if not validate_card:
             app.logger.error('CreditCardService - updateCreditCard - card number is invalid')
-            return False
+            return {"error": "Credit card is invalid"}
 
         brand = self.validator.get_brand_by_card_number(payload["number"])
 
@@ -116,7 +120,7 @@ class CreditCardService:
         existing_credit_card = self.repository.get_credit_card(card_id)
         if not existing_credit_card:
             app.logger.error('CreditCardService - deleteCreditCard - credit card not found')
-            return False
+            return {"error": "Credit card not found"}, 404
 
         app.logger.info('CreditCardService - deleteCreditCard - call repository method to delete credit card')
         if self.repository.delete_credit_card(card_id):
