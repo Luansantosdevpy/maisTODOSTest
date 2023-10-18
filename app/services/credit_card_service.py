@@ -36,16 +36,20 @@ class CreditCardService:
             return None
 
     def create_credit_card(self, payload):
+        is_valid_exp_date = self.validator.is_valid_exp_date(payload["exp_date"])
+        if is_valid_exp_date is False:
+            return {"error": "expiration date is invalid"}
+
         formatted_exp_date = self.validator.format_exp_date(payload["exp_date"])
 
         if not formatted_exp_date:
-            return {"error": "Invalid expiration date format"}, 400
+            return {"error": "Invalid expiration date format"}
 
         validate_card = self.validator.is_valid_card_number(payload["number"])
 
         if not validate_card:
             app.logger.error('CreditCardService - createCreditCard - card number is invalid')
-            return {"error": "Credit card is invalid"}, 422
+            return {"error": "Credit card is invalid"}
 
         brand = self.validator.get_brand_by_card_number(payload["number"])
 

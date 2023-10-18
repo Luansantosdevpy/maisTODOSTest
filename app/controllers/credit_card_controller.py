@@ -115,7 +115,11 @@ def create_credit_card(current_user):
             app.logger.error(f'CreditCardController - createNewCreditCard - error: {str(e)}')
             return jsonify({"message": "Failed to create credit card"}), 500
 
-        if credit_card_service.create_credit_card(credit_card_dict):
+        result = credit_card_service.create_credit_card(credit_card_dict)
+
+        if isinstance(result, dict) and "error" in result:
+            return jsonify(result), 400
+        elif result:
             return jsonify({"message": "Credit card created successfully"}), 201
         else:
             app.logger.error('CreditCardController - createNewCreditCard - error to create credit card')
