@@ -146,11 +146,12 @@ Para visualizar o resultado dos testes:
 ```
 
 ## Possíveis erros
-É possível encontrar um erro ao rodar a aplicação com docker. Não consegui descbrir a tempo o que está causando o erro. Caso aconteça, tente fazer o seguinte:
+É possível encontrar um erro ao rodar a aplicação com docker. Não consegui descobrir a tempo o que está causando o erro. Caso aconteça, tente fazer o seguinte:
 rode o seguinte comando do docker
 ```shell
-  docker-compose up -d
+  docker-compose up --scale app=0 --scale postgres=1
 ```
+Faça isso para rodar apenas o banco
 Rode localmente tudo como foi ensinado anteriormente, já com o banco montado pelo docker-compose para rodar a aplicação localmente.
 
 É possível encontrar um erro no psycopg2 ao instalar o requirements.txt localmente, esse erro: Error: pg_config executable not found.
